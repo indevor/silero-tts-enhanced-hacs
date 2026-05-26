@@ -22,6 +22,8 @@ This integration connects directly to the **[Silero TTS Enhanced Engine Add-on](
 2. Click **+ Add Integration** and search for `Silero TTS Enhanced`.
 3. Enter your Add-on Server IP (e.g., `http://192.168.1.114:8014`).
 4. Select your preferred voice and model. Done!
+5. You can select voices and models in the automation settings; see the example.
+6. If a model or voice isn't available in the list, you can enter it manually (for example: v5_5_ru)
 
 [Silero Models list](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
 
@@ -37,3 +39,46 @@ data:
   options:
     model_id: "v3_en"
     voice: "en_24"
+```
+-----------------------------------------------------------------------
+# Silero TTS Enhanced — интеграция с Home Assistant
+
+Современная интеграция Silero TTS с Home Assistant с возможностью настройки интерфейса. Больше не нужно редактировать YAML!
+
+Эта интеграция подключается напрямую к **[дополнению Silero TTS Enhanced Engine](https://github.com/indevor/silero-tts-enhanced-addon)** и предоставляет его в качестве встроенного поставщика TTS для медиаплеера / голосового помощника в Home Assistant.
+
+## Особенности
+- ⚙️ **Настройка (интерфейс):** Настраивайте IP-адреса, языки, голоса и частоту дискретизации полностью через интерфейс Home Assistant.
+- 🗣️ **Поддержка голосового помощника:** Полная совместимость с функцией «Assist» Home Assistant.
+- 🚀 **Асинхронность и скорость:** Использует неблокирующие HTTP-запросы. Система не зависает.
+-  **Многоязычность:** Поддерживает `ru`, `en`, `de`, `es`, `fr` и другие языки.
+
+## Установка через HACS
+1. Убедитесь, что вы установили сопутствующее [дополнение Silero](https://github.com/indevor/silero-tts-enhanced-addon) и оно запущено.
+2. Откройте **HACS** -> **Интеграции**.
+3. Нажмите на три точки (вверху справа) -> **Пользовательские репозитории**.
+4. Добавьте URL этого репозитория в качестве **Интеграции**.
+5. Нажмите **Скачать**, затем **Перезапустить Home Assistant**.
+
+## Настройка
+1. Перейдите в **Настройки** -> **Устройства и службы**.
+2. Нажмите **+ Добавить интеграцию** и найдите `Silero TTS Enhanced`.
+3. Введите IP-адрес вашего сервера дополнения (например, `http://192.168.1.114:8014`).
+4. Выберите предпочтительный голос и модель. Готово!
+5. Голоса и модели можно выбрать в автоматизации см. пример.
+6. Модель и голос можно написать вручню, если он не доступны в списке (например: v5_5_ru)
+
+[Список моделей Silero](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
+
+```yaml
+service: tts.speak
+target:
+  entity_id: tts.silero_tts_enhanced
+data:
+  media_player_entity_id: media_player.living_room
+  message: "Внимание. Температура процессора достигла 80 градусов."
+  options:
+    model_id: "v5_ru"
+    voice: "xenia"
+    put_accent: true
+```
