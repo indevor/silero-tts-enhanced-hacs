@@ -26,6 +26,7 @@ This integration connects directly to the **[Silero TTS Enhanced Engine Add-on](
 6. If a model or voice isn't available in the list, you can enter it manually (for example: v5_5_ru)
 
 [Silero Models list](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
+[Silero English v3 audio samples](https://oobabooga.github.io/silero-samples/)
 
 ## Usage in Automations
 ```yaml
