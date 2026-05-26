@@ -1,0 +1,13 @@
+{
+  "domain": "silero_tts_enhanced",
+  "name": "Silero TTS Enhanced",
+  "codeowners": ["@indevor"],
+  "version": "1.0.0",
+  "config_flow": true,
+  "dependencies": [],
+  "requirements": [],
+  "iot_class": "local_push",
+  "integration_type": "hub",
+  "issue_tracker": "https://github.com/indevor/silero-tts-enhanced-hacs/issues",
+  "documentation": "https://github.com/indevor/silero-tts-enhanced-hacs"
+}
