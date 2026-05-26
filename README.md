@@ -23,7 +23,7 @@ This integration connects directly to the **[Silero TTS Enhanced Engine Add-on](
 3. Enter your Add-on Server IP (e.g., `http://192.168.1.114:8014`).
 4. Select your preferred voice and model. Done!
 
-[Silero Models list](https://github.com/indevor/silero-tts-enhanced-addon](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
+[Silero Models list](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
 
 ## Usage in Automations
 ```yaml
