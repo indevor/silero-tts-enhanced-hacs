@@ -6,6 +6,9 @@ DOMAIN = "silero_tts_enhanced"
 PLATFORMS = ["tts"]
 _LOGGER = logging.getLogger(__name__)
 
+# Эта строка сообщает Hassfest, что мы используем только графический интерфейс
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     hass.data.setdefault(DOMAIN, {})
     return True
