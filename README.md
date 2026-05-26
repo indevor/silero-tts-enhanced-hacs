@@ -40,6 +40,10 @@ data:
     model_id: "v3_en"
     voice: "en_24"
 ```
+## 📝 Acknowledgements & License
+This project is an unofficial wrapper/integration. The core Text-to-Speech neural models are developed and owned by the [Silero Team](https://github.com/snakers4/silero-models).
+The models are published under the **CC BY-NC** (Non-Commercial) license. Please respect the authors' rights and use this integration strictly for personal, non-commercial purposes.
+
 -----------------------------------------------------------------------
 # Silero TTS Enhanced — интеграция с Home Assistant
 
@@ -82,3 +86,6 @@ data:
     voice: "xenia"
     put_accent: true
 ```
+## 📝 Лицензия и Авторы
+Этот проект является неофициальной интеграцией-оберткой. Сами нейросетевые модели синтеза речи разработаны и принадлежат команде [Silero Team](https://github.com/snakers4/silero-models).
+Модели распространяются под некоммерческой лицензией **CC BY-NC**. Пожалуйста, уважайте труд авторов и используйте этот проект только в некоммерческих и личных целях.
