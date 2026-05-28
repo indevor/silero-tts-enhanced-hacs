@@ -26,7 +26,24 @@ This integration connects directly to the **[Silero TTS Enhanced Engine Add-on](
 6. If a model or voice isn't available in the list, you can enter it manually (for example: v5_5_ru)
 
 [Silero Models list](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
+
 [Silero English v3 audio samples](https://oobabooga.github.io/silero-samples/)
+
+### Available Models and Speakers
+
+| Language | Model Version | Speakers Count | Speaker Names |
+| :--- | :--- | :---: | :--- |
+| **Russian** | `v5_ru, v5_5_ru` | 5 | aidar, baya, kseniya, xenia, eugene |
+| **Ukrainian** | `v4_ua` | 1 | mykyta |
+| **Uzbek** | `v4_uz` | 1 | dilnavoz |
+| **English** | `v3_en` | 118 | en_0, en_1, ..., en_117 |
+| **Spanish** | `v3_es` | 3 | es_0, es_1, es_2 |
+| **French** | `v3_fr` | 6 | fr_0, fr_1, fr_2, fr_3, fr_4, fr_5 |
+| **German** | `v3_de` | 5 | bernd_ungerer, eva_k, friedrich, hokuspokus, karlsson |
+| **Tatar** | `v3_tt` | 1 | dilyara |
+| **Mongolian** | `v3_xal` | 2 | erdni, delghir |
+
+and more.. see: [Silero Models](https://github.com/snakers4/silero-models/)
 
 ## Usage in Automations
 ```yaml
@@ -74,6 +91,23 @@ The models are published under the **CC BY-NC** (Non-Commercial) license. Please
 6. Модель и голос можно написать вручню, если он не доступны в списке (например: v5_5_ru)
 
 [Список моделей Silero](https://github.com/snakers4/silero-models/blob/master/models.yml#L144)
+
+
+### Модели и голоса
+
+| Language | Model Version | Speakers Count | Speaker Names |
+| :--- | :--- | :---: | :--- |
+| **Russian** | `v5_ru, v5_5_ru` | 5 | aidar, baya, kseniya, xenia, eugene |
+| **Ukrainian** | `v4_ua` | 1 | mykyta |
+| **Uzbek** | `v4_uz` | 1 | dilnavoz |
+| **English** | `v3_en` | 118 | en_0, en_1, ..., en_117 |
+| **Spanish** | `v3_es` | 3 | es_0, es_1, es_2 |
+| **French** | `v3_fr` | 6 | fr_0, fr_1, fr_2, fr_3, fr_4, fr_5 |
+| **German** | `v3_de` | 5 | bernd_ungerer, eva_k, friedrich, hokuspokus, karlsson |
+| **Tatar** | `v3_tt` | 1 | dilyara |
+| **Mongolian** | `v3_xal` | 2 | erdni, delghir |
+
+и другие, смотрите: [Silero Models](https://github.com/snakers4/silero-models/)
 
 ```yaml
 service: tts.speak
