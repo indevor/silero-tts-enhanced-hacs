@@ -8,7 +8,9 @@
           "language": "Language",
           "model_id": "Model ID",
           "speaker": "Speaker",
-          "sample_rate": "Sample Rate"
+          "sample_rate": "Sample Rate",
+		  "put_accent": "Put accent",
+          "put_yo": "Put yo"
         }
       }
     }
