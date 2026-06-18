@@ -20,15 +20,17 @@ def get_schema(data: dict):
         ),
         vol.Required("speaker", default=data.get("speaker", "aidar")): str,
         
-        # --- ЕДИНСТВЕННОЕ ИЗМЕНЕНИЕ: ВЫПАДАЮЩИЙ СПИСОК ДЛЯ ЧАСТОТЫ ---
-        vol.Required("sample_rate", default=data.get("sample_rate", 48000)): selector.SelectSelector(
-            selector.SelectSelectorConfig(options=[
-                {"value": 8000, "label": "8000 Hz"},
-                {"value": 24000, "label": "24000 Hz"},
-                {"value": 48000, "label": "48000 Hz"}
-            ])
+        # --- ИСПРАВЛЕННЫЙ БЛОК ЧАСТОТЫ ДИСКРЕТИЗАЦИИ ---
+        vol.Required("sample_rate", default=str(data.get("sample_rate", "48000"))): selector.SelectSelector(
+            selector.SelectSelectorConfig(
+                options=[
+                    {"value": "8000", "label": "8000 Hz"},
+                    {"value": "24000", "label": "24000 Hz"},
+                    {"value": "48000", "label": "48000 Hz"}
+                ]
+            )
         ),
-        # -------------------------------------------------------------
+        # ------------------------------------------------
         
         vol.Required("put_accent", default=data.get("put_accent", True)): bool,
         vol.Required("put_yo", default=data.get("put_yo", True)): bool,
@@ -40,6 +42,8 @@ class SileroTTSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         """Первый шаг установки интеграции."""
         if user_input is not None:
+            # Конвертируем обратно в число перед сохранением
+            user_input["sample_rate"] = int(user_input["sample_rate"])
             return self.async_create_entry(title="Silero TTS", data=user_input)
         return self.async_show_form(step_id="user", data_schema=get_schema({}))
 
@@ -57,12 +61,17 @@ class SileroTTSOptionsFlowHandler(OptionsFlowWithReload):
     async def async_step_init(self, user_input=None):
         """Форма редактирования настроек."""
         if user_input is not None:
+            # Конвертируем обратно в число перед сохранением
+            user_input["sample_rate"] = int(user_input["sample_rate"])
             # Сохраняем новые опции; перезагрузка произойдёт автоматически благодаря OptionsFlowWithReload
             return self.async_create_entry(title="", data=user_input)
 
-        # Берём текущие значения (сначала из options, если есть, иначе из data)
-        current = self.config_entry.options or self.config_entry.data
+        # Берём текущие значения и переводим в стандартный словарь
+        current = dict(self.config_entry.options or self.config_entry.data)
+        
+        # Конвертируем сохраненное число в строку для безопасной подстановки в выпадающий список
+        current["sample_rate"] = str(current.get("sample_rate", 48000))
 
         # Подставляем текущие значения в схему
-        schema = self.add_suggested_values_to_schema(get_schema({}), current)
+        schema = self.add_suggested_values_to_schema(get_schema(current), current)
         return self.async_show_form(step_id="init", data_schema=schema)
