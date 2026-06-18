@@ -1,6 +1,7 @@
 import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+import homeassistant.helpers.config_validation as cv  # <-- Добавлен недостающий импорт
 
 DOMAIN = "silero_tts_enhanced"
 PLATFORMS = ["tts"]
