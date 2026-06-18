@@ -8,9 +8,9 @@ from homeassistant.config_entries import OptionsFlowWithReload
 DOMAIN = "silero_tts_enhanced"
 _LOGGER = logging.getLogger(__name__)
 
-def get_schema(data: dict):
-    """Генератор схемы настроек (используется и при установке, и при редактировании)."""
-    return vol.Schema({
+def get_schema(data: dict, is_options: bool = False):
+    """Генератор схемы настроек (с возможностью скрытия опций при установке)."""
+    schema_dict = {
         vol.Required("host", default=data.get("host", "http://192.168.1.114:8014")): str,
         vol.Required("language", default=data.get("language", "ru")): selector.SelectSelector(
             selector.SelectSelectorConfig(options=["ru", "en", "de", "es", "fr", "tt", "uz", "ua"], custom_value=True)
@@ -20,7 +20,6 @@ def get_schema(data: dict):
         ),
         vol.Required("speaker", default=data.get("speaker", "aidar")): str,
         
-        # --- ИСПРАВЛЕННЫЙ БЛОК ЧАСТОТЫ ДИСКРЕТИЗАЦИИ ---
         vol.Required("sample_rate", default=str(data.get("sample_rate", "48000"))): selector.SelectSelector(
             selector.SelectSelectorConfig(
                 options=[
@@ -30,11 +29,16 @@ def get_schema(data: dict):
                 ]
             )
         ),
-        # ------------------------------------------------
-        
-        vol.Required("put_accent", default=data.get("put_accent", True)): bool,
-        vol.Required("put_yo", default=data.get("put_yo", True)): bool,
-    })
+    }
+
+    # Показываем эти чекбоксы только при редактировании
+    if is_options:
+        schema_dict.update({
+            vol.Required("put_accent", default=data.get("put_accent", True)): bool,
+            vol.Required("put_yo", default=data.get("put_yo", True)): bool,
+        })
+
+    return vol.Schema(schema_dict)
 
 class SileroTTSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -42,36 +46,34 @@ class SileroTTSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         """Первый шаг установки интеграции."""
         if user_input is not None:
-            # Конвертируем обратно в число перед сохранением
             user_input["sample_rate"] = int(user_input["sample_rate"])
+            # Убедимся, что дефолтные значения сохранятся, даже если полей не было на форме
+            user_input.setdefault("put_accent", True)
+            user_input.setdefault("put_yo", True)
             return self.async_create_entry(title="Silero TTS", data=user_input)
-        return self.async_show_form(step_id="user", data_schema=get_schema({}))
+        
+        # Вызываем с is_options=False
+        return self.async_show_form(step_id="user", data_schema=get_schema({}, is_options=False))
 
     @staticmethod
     @callback
     def async_get_options_flow(config_entry):
-        """Вернуть обработчик опций (кнопка «Настроить»)."""
         return SileroTTSOptionsFlowHandler()
 
 
 class SileroTTSOptionsFlowHandler(OptionsFlowWithReload):
-    """Обработчик изменения настроек (шестерёнка). Наследуемся от OptionsFlowWithReload,
-    чтобы автоматически перезагружать интеграцию после сохранения."""
-
     async def async_step_init(self, user_input=None):
         """Форма редактирования настроек."""
         if user_input is not None:
-            # Конвертируем обратно в число перед сохранением
             user_input["sample_rate"] = int(user_input["sample_rate"])
-            # Сохраняем новые опции; перезагрузка произойдёт автоматически благодаря OptionsFlowWithReload
             return self.async_create_entry(title="", data=user_input)
 
-        # Берём текущие значения и переводим в стандартный словарь
-        current = dict(self.config_entry.options or self.config_entry.data)
+        # --- ВАЖНОЕ ИСПРАВЛЕНИЕ БАГА СЛИЯНИЯ ---
+        # Вместо конструкции 'or' безопасно объединяем словари, чтобы не потерять host при сохранении опций
+        current = {**self.config_entry.data, **self.config_entry.options}
         
-        # Конвертируем сохраненное число в строку для безопасной подстановки в выпадающий список
         current["sample_rate"] = str(current.get("sample_rate", 48000))
 
-        # Подставляем текущие значения в схему
-        schema = self.add_suggested_values_to_schema(get_schema(current), current)
+        # Вызываем с is_options=True
+        schema = self.add_suggested_values_to_schema(get_schema(current, is_options=True), current)
         return self.async_show_form(step_id="init", data_schema=schema)
